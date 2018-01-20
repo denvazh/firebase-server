@@ -19,7 +19,8 @@ cli.parse({
 	data: ['d', 'JSON data to bootstrap the server with', 'string', '{}'],
 	file: ['f', 'JSON file to bootstrap the server with', 'file'],
 	rules: ['r', 'JSON file with security rules to load', 'file'],
-	secret: ['s', 'Shared client auth token secret', 'string']
+	secret: ['s', 'Shared client auth token secret', 'string'],
+	noauth: [false, 'Disable authentication', 'boolean', false]
 });
 
 cli.main(function (args, options) { // eslint-disable-line max-statements,complexity
@@ -85,6 +86,10 @@ cli.main(function (args, options) { // eslint-disable-line max-statements,comple
 
 	if (rules) {
 		server.setRules(rules);
+	}
+
+	if (options.noauth) {
+		server.setNoAuth(options.noauth === 'true');
 	}
 
 	if (options.secret) {

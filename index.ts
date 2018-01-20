@@ -64,6 +64,7 @@ class FirebaseServer {
 	private app;
 	private baseRef;
 	private authSecret;
+	private noauth;
 	private targaryen;
 	private https;
 	private wss: WebSocketServer;
@@ -325,7 +326,7 @@ class FirebaseServer {
 		}
 
 		function handleAuth(requestId: number, credential: string) {
-			if (server.authSecret === credential) {
+			if (server.noauth || (server.authSecret === credential)) {
 				return send({
 					d: {
 						b: {
@@ -441,6 +442,10 @@ class FirebaseServer {
 	public setAuthSecret(newSecret: string) {
 		this.authSecret = newSecret;
 		this.tokenValidator.setSecret(newSecret);
+	}
+
+	public setNoAuth(flag: boolean | false) {
+		this.noauth = flag;
 	}
 }
 
